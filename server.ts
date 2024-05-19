@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import http from "http";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import path from "path";
 
 const app = express();
@@ -11,10 +11,20 @@ app.get("/", (req: Request, res: Response) => {
   return res.status(200).sendFile(path.join(__dirname, "/index.html"));
 });
 
-io.on("connection", (client) => {
+io.on("connection", (socket : Socket) => {
+  //Browser connect
   console.log(`User Connect To (Server)🚀🚀 `);
 
-  client.on("disconnect", () => {
+
+  //send to client (browser)
+  socket.on('message' , (message : string)  => {
+    io.emit('message' , message)
+  })
+
+
+
+  //Browser disconnect
+  socket.on("disconnect", () => {
     console.log(`User Disconnect From (Server)🚀🚀 `);
   });
 });

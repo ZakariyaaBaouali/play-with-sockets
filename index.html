@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.io</title>
+</head>
+<body>
+    <h1>Socket.io</h1>
+    <button id="Btn">Send To Server</button>
+    <ul id="list"></ul>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module">
+        const socket = io();
+        const button = document.getElementById('Btn');
+        const list = document.getElementById('list');
+
+        socket.on('connect' , () => console.log(`Connect to (Client) 🚀🚀 `))
+
+        socket.on('message' , (message) => {
+            const item = document.createElement('li')
+            item.innerText = message
+            list.appendChild(item);
+        })
+
+        socket.on('disconnect' , () => console.log(`Disconnect From (Client) 🚀🚀 `))
+
+
+        button.addEventListener('click' , () => {
+            socket.emit('message' , 'This is a new message')
+        })
+    </script>
+</body>
+</html>
